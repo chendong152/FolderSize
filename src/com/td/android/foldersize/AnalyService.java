@@ -40,12 +40,8 @@ public class AnalyService extends Service {
 	private FolderHelper.CancelToken mToken;
 	private boolean mIsFinished;
 
-	private volatile long mTotalSize;
 	private ResultItem mResultItem;
 	
-	private synchronized void addSize(long singleSize) {
-		mTotalSize += singleSize;
-	}
 	
 	private synchronized void addResultItem(ResultItem item) {
 		if(mResultItem==null) {
@@ -161,7 +157,6 @@ public class AnalyService extends Service {
 				+ ", 即将计算path:" + path);
 
 		mPath = path;
-		mTotalSize = 0;
 
 		Callback finishCallback = new Callback() {
 			public void onFinish(Object obj) {
@@ -211,7 +206,6 @@ public class AnalyService extends Service {
 				addResultItem(item);
 			}
 		} else if (file.isFile()) {
-			mTotalSize = file.length();
 			ResultItem item=new ResultItem();
 			item.size=file.length();
 			item.fileCount=1;
@@ -246,9 +240,8 @@ public class AnalyService extends Service {
 		mCompletedThreadCount++;
 
 		AsyncThread r=thread;
-		addSize(r.getResult());
 		addResultItem(r.getResultItem());
-		Log.i("my-debug", "onItemComplete:次数" + mCompletedThreadCount +", 本次计算结果："+r.getResult()
+		Log.i("my-debug", "onItemComplete:次数" + mCompletedThreadCount +", 本次计算结果："+r.getResultItem().size
 				+", resultItem.size:"+r.getResultItem().size+", resultItem.folderCount:"+r.getResultItem().folderCount+
 				", lastFile:" + r.lastFileString);
 		
@@ -262,11 +255,12 @@ public class AnalyService extends Service {
 	 */
 	private void onComplete() {
 		Log.i("my-debug", "服務中 onComplete: 启用的线程数" + mStartedThreadCount + "， 已完成的线程数：" + mCompletedThreadCount
-				+",path:" + mPath + ", size:" + mTotalSize + ", handler:" + mHandler
+				+",path:" + mPath + ", size:" + mResultItem.size + ", handler:" + mHandler
 				+",file数："+ mResultItem.fileCount);
 		ResultItem item = mResultItem;
 		//item.size = mTotalSize;
 		item.path = mPath;
+		item.isFinal=mPathQueue.isEmpty();
 		mResultQueue.addFirst(item);
 
 		if (mHandler != null) {
@@ -323,15 +317,6 @@ public class AnalyService extends Service {
 			}
 			mCallback.onFinish(this);
 		}
-
-		/**
-		 * 獲取計算結果
-		 * 
-		 * @return
-		 */
-		public long getResult() {
-			return mSize;
-		}
 		
 		public ResultItem getResultItem() {
 			ResultItem ret=new ResultItem();
@@ -351,6 +336,11 @@ public class AnalyService extends Service {
 		public String path;
 		public int fileCount;
 		public int folderCount;
+		
+		/**
+		 * 是不是最后一个任务。如果为true，则表示此次计算队列完成。
+		 */
+		public boolean isFinal;
 
 		public String getSizeString() {
 			return FolderHelper.sizeToString(size);

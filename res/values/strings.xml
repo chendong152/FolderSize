@@ -5,5 +5,9 @@
 	<string name="action_settings">Settings</string>
 	<string name="hello_world">你好</string>
 	<string name="parentFolderText">..</string>
+	<string name="bySize">按大小</string>
+	<string name="byName">按名称</string>
+	<string name="sortDesc">排序方式</string>
+	<string name="sortText">排序方式</string>
 
 </resources>

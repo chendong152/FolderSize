@@ -12,8 +12,7 @@
 		android:allowBackup="true"
 		android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name"
-		android:theme="@style/AppTheme" >
-		<uses-library android:name="android.test.runner" /><!-- 为测试添加  android.test.runner-->
+		android:theme="@style/AppTheme" > 
 	
 		<activity
 			android:name="com.td.android.foldersize.MainActivity"
@@ -27,6 +26,5 @@
 		<service  android:name=".AnalyService"></service>
 		
 	</application>
-
-	<instrumentation android:name="android.test.InstrumentationTestRunner" android:targetPackage="com.td.android.foldersize" />
+ 
 </manifest>
