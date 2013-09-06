@@ -14,6 +14,9 @@
 		android:layout_weight="1"
 		android:orientation="vertical">
 		<TextView 
+			android:ellipsize="end"
+			android:singleLine="true"
+			android:layout_marginRight="3dp"
 			android:id="@+id/tvPath"
 			android:layout_width="match_parent"
 			android:layout_weight="1"

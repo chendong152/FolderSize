@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slMenu"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="vertical"
+    android:background="#ececec"
+    android:padding="5dp">
+	 
+	<TextView 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/sortText"
+		style="@style/menuTitle"/>
+	<TextView 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/noSortDesc" />
+	<RadioGroup 
+			android:contentDescription="@string/sortDesc"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:paddingLeft="@dimen/indent">
+			
+		<RadioButton android:id="@+id/chkByName"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent" 
+			android:layout_weight="1"
+			android:text="@string/byName"
+			android:tag="1"/> 
+			
+		<RadioButton android:id="@+id/chkBySize"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent" 
+			android:layout_weight="1"
+			android:text="@string/bySize" 
+			android:tag="2" />
+		
+	</RadioGroup>
+		 
+	<View 
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:background="#888888"/>
+	
+	<!--<Button
+		android:layout_marginTop="15dp"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		style="@style/stExitBtn"
+		android:layout_gravity="center_vertical|center"
+		android:text="@string/exitStr"/> 
+		 
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		 android:text="First"/>  -->
+</LinearLayout>

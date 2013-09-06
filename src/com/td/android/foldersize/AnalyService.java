@@ -6,26 +6,17 @@ package com.td.android.foldersize;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
+import java.util.Map;
 
-import android.R.bool;
-import android.R.integer;
 import android.app.Service;
-import android.content.ClipData.Item;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Message;
-import android.provider.MediaStore.Files;
-import android.text.TextUtils.StringSplitter;
 import android.util.Log;
 
 import com.td.android.libs.infra.util.*;
@@ -159,6 +150,7 @@ public class AnalyService extends Service {
 		mPath = path;
 
 		Callback finishCallback = new Callback() {
+			@Override
 			public void onFinish(Object obj) {
 				AsyncThread r = (AsyncThread) obj;
 				onItemComplete(r);
@@ -169,6 +161,7 @@ public class AnalyService extends Service {
 		File file = new File(mPath);
 		if (file.isDirectory()) {
 			File[] allFolders = file.listFiles(new FileFilter() {
+				@Override
 				public boolean accept(File pathname) {
 					return pathname.isDirectory();
 				}
@@ -189,6 +182,7 @@ public class AnalyService extends Service {
 
 			// 1条线程执行当前文件夹下的文件的总大小
 			File[] allFiles = file.listFiles(new FileFilter() {
+				@Override
 				public boolean accept(File pathname) {
 					return pathname.isFile();
 				}
@@ -224,6 +218,9 @@ public class AnalyService extends Service {
 
 	private int mStartedThreadCount;
 	private boolean mIsRunning;
+	public List<Map<String, Object>> cachedData;
+	public int X;
+	public int Y;
 
 	/**
 	 * @return
@@ -304,6 +301,7 @@ public class AnalyService extends Service {
 			mCallback = finishCallback;
 		}
 
+		@Override
 		public void run() {
 			super.run();
 			for (File file : mFiles) {
